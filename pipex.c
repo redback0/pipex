@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/01 03:59:47 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/01 05:18:55 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,48 @@
 #include <sys/wait.h>
 #include "libft.h"
 
-int	main(void)
+int	run_command(char *cmd)
 {
-	char *args[] = {"/bin/ls", 0};
-	char *env[] = {"PATH=/bin", 0};
-	pid_t	child;
-	int		status;
+	int		pipefd[2];
+	char	**args;
+	int		fd;
+	int		signal;
 
-	child = fork();
-	if (child == 0)
+	pipe(pipefd);
+	if (fork() == 0)
 	{
-		execve(args[0], args, env);
-		perror("ERROR: ");
+		dup2(pipefd[1], 1);
+		close(pipefd[0]);
+		close(pipefd[1]);
+		args = ft_split(cmd, ' ');
+		execve(args[0], args, NULL);
+		perror("Error: ");
+		exit(1);
 	}
 	else
 	{
-		ft_printf("<PARENT> Forked\n");
-		waitpid(-1, &status, 0);
+		fd = dup(pipefd[0]);
+		close(pipefd[1]);
+		close(pipefd[0]);
+		waitpid(-1, &signal, 0);
+		return (fd);
+	}
+}
+
+int	main(int ac, char *av[])
+{
+	int		in_fd;
+	char	*line;
+	while (ac-- > 1)
+	{
+		in_fd = run_command(av[ac]);
+		ft_putnbr_fd(1, in_fd);
+		ft_putchar_fd(2, '\n');
+		line = get_next_line(in_fd);
+		while (line)
+		{
+			ft_printf(line);
+			line = get_next_line(in_fd);
+		}
 	}
 }
