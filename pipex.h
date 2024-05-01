@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:20:53 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/01 15:21:52 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/01 18:29:31 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/wait.h>
 # include "libft.h"
 
-int	run_command(char *cmd);
+int		run_command(char *cmd, char **path);
+char	*find_command(char *cmd, char **path);
 
 #endif

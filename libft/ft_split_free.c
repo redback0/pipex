@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_log.c                                           :+:      :+:    :+:   */
+/*   ft_split_free.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/30 15:09:04 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/01 18:58:18 by njackson         ###   ########.fr       */
+/*   Created: 2024/05/01 17:25:25 by njackson          #+#    #+#             */
+/*   Updated: 2024/05/01 17:33:22 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_log(int level, const char *format, ...)
+void	ft_split_free(char **arr, void (*del)(void *))
 {
-	va_list	args;
-	int		fd;
+	int	i;
 
-	if (level >= LOGERROR)
-		fd = 2;
-	else if (level >= LOGLEVEL)
-		fd = 1;
-	else
-		return (0);
-	va_start(args, format);
-	return (ft_printf_args(fd, format, args));
+	i = 0;
+	while (arr[i])
+		del(arr[i++]);
+	free(arr);
 }
