@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 00:30:22 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/01 17:32:32 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/01 19:34:33 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int		ft_putendl_fd(char *s, int fd);
 int		ft_putnbr_base_fd(long long n, char *base, int fd);
 int		ft_putunbr_base_fd(unsigned long long n, char *base, int fd);
 int		ft_putnbr_fd(long long n, int fd);
-int		ft_putptr_fd(void * n, int fd);
+int		ft_putptr_fd(void *n, int fd);
 
 // ARRAY STUFF
 

@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:20:53 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/01 18:29:31 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/01 19:56:27 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,12 @@
 # include <stdio.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <fcntl.h>
 # include "libft.h"
 
-int		run_command(char *cmd, char **path);
+char	**get_path(char **ep);
+int		run_command(char *cmd, int infd, char **path);
 char	*find_command(char *cmd, char **path);
+void	output_to_file(int infd, char *file);
 
 #endif
