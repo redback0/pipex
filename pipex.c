@@ -6,16 +6,23 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/01 15:25:01 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/01 17:15:03 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	main(int ac, char *av[])
+int	main(int ac, char *av[], char *env[])
 {
 	int		in_fd;
 	char	*line;
+	int		i;
+
+	i = -1;
+	while (env[++i])
+	{
+		//ft_putendl_fd(env[i], 2);
+	}
 	while (ac-- > 1)
 	{
 		in_fd = run_command(av[ac]);
@@ -37,6 +44,7 @@ int	run_command(char *cmd)
 	int		fd;
 	int		signal;
 
+	args = 0;
 	pipe(pipefd);
 	if (fork() == 0)
 	{
@@ -53,7 +61,9 @@ int	run_command(char *cmd)
 		fd = dup(pipefd[0]);
 		close(pipefd[1]);
 		close(pipefd[0]);
-		waitpid(-1, &signal, 0);
+		wait(&signal);
+		ft_printf("test\n");
+		ft_log(3, "%p\n", args);
 		return (fd);
 	}
 }
