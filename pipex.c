@@ -6,17 +6,29 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/01 05:18:55 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/01 15:25:01 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "pipex.h"
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include "libft.h"
+#include "pipex.h"
+
+int	main(int ac, char *av[])
+{
+	int		in_fd;
+	char	*line;
+	while (ac-- > 1)
+	{
+		in_fd = run_command(av[ac]);
+		ft_putnbr_fd(1, in_fd);
+		ft_putchar_fd(2, '\n');
+		line = get_next_line(in_fd);
+		while (line)
+		{
+			ft_printf(line);
+			line = get_next_line(in_fd);
+		}
+	}
+}
 
 int	run_command(char *cmd)
 {
@@ -43,23 +55,5 @@ int	run_command(char *cmd)
 		close(pipefd[0]);
 		waitpid(-1, &signal, 0);
 		return (fd);
-	}
-}
-
-int	main(int ac, char *av[])
-{
-	int		in_fd;
-	char	*line;
-	while (ac-- > 1)
-	{
-		in_fd = run_command(av[ac]);
-		ft_putnbr_fd(1, in_fd);
-		ft_putchar_fd(2, '\n');
-		line = get_next_line(in_fd);
-		while (line)
-		{
-			ft_printf(line);
-			line = get_next_line(in_fd);
-		}
 	}
 }
