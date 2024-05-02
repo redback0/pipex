@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/01 20:14:44 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:57:32 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int ac, char *av[], char *ep[])
 	if (pfd < 0)
 		return (1); // ERROR
 	i = 2;
-	while (i < ac - 1)
+	while (i < ac - 1 && pfd >= 0)
 	{
 		npfd = run_command(av[i], pfd, path);
 		close(pfd);
@@ -35,7 +35,8 @@ int	main(int ac, char *av[], char *ep[])
 		i++;
 		wait(&status);
 	}
-	output_to_file(pfd, av[i]);
+	if (pfd >= 0)
+		output_to_file(pfd, av[i]);
 }
 /*
 	while (ac-- > 1)
@@ -79,6 +80,7 @@ int	run_command(char *cmd, int infd, char **path)
 	int		pipefd[2];
 	char	**args;
 	int		fd;
+	int		signal;
 
 	args = 0;
 	pipe(pipefd);
@@ -91,7 +93,7 @@ int	run_command(char *cmd, int infd, char **path)
 		args = ft_split(cmd, ' ');
 		args[0] = find_command(args[0], path);
 		execve(args[0], args, NULL);
-		perror("Error: ");
+		perror(args[0]);
 		exit(1);
 	}
 	else
@@ -99,7 +101,11 @@ int	run_command(char *cmd, int infd, char **path)
 		fd = dup(pipefd[0]);
 		close(pipefd[1]);
 		close(pipefd[0]);
-		return (fd);
+		wait(&signal);
+		if (signal == 0)
+			return (fd);
+		close(fd);
+		return (-1);
 	}
 }
 
