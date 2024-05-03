@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/03 17:07:09 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/03 20:24:56 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ int	main(int ac, char *av[], char *ep[])
 	int		i;
 
 	if (ac < 5)
-		return (1); // ERROR
-	path = get_path(ep);
+		return (1); // ERROR -- what do I do here?
 	pfd = open(av[1], O_RDONLY);
 	if (pfd < 0)
 	{
 		perror(av[1]);
-		return (1); // ERROR
+		return (1);
 	}
+	path = get_path(ep);
 	i = 2;
 	while (i < ac - 1 && pfd >= 0)
 	{
@@ -41,21 +41,6 @@ int	main(int ac, char *av[], char *ep[])
 	if (pfd >= 0)
 		output_to_file(pfd, av[i]);
 }
-/*
-	while (ac-- > 1)
-	{
-		in_fd = run_command(av[ac], path);
-		ft_putnbr_fd(1, in_fd);
-		ft_putchar_fd(2, '\n');
-		line = get_next_line(in_fd);
-		while (line)
-		{
-			ft_log(0, line);
-			free(line);
-			line = get_next_line(in_fd);
-		}
-	}
-*/
 
 char	**get_path(char **ep)
 {
@@ -118,23 +103,26 @@ char	*find_command(char *cmd, char **path)
 	char	*tmp;
 	int		i;
 
-	if (access(cmd, F_OK) == 0)
+	if (ft_strncmp(cmd, "./", 2) == 0 && access(cmd, F_OK) == 0)
 		return (cmd);
+	else
+	{
 	tmp = ft_strjoin("/", cmd);
 	i = 0;
 	while (path[i])
 	{
 		check = ft_strjoin(path[i++], tmp);
 		if (access(check, F_OK) == 0)
-		{
-			free(tmp);
-			free(cmd);
-			return (check);
+			{
+				free(tmp);
+				free(cmd);
+				return (check);
+			}
+			free(check);
 		}
-		free(check);
+		free(tmp);
+		return (cmd);
 	}
-	free(tmp);
-	return (cmd);
 }
 
 void	output_to_file(int infd, char *file)
