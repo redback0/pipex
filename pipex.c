@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/02 15:57:32 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:07:09 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ int	main(int ac, char *av[], char *ep[])
 	path = get_path(ep);
 	pfd = open(av[1], O_RDONLY);
 	if (pfd < 0)
+	{
+		perror(av[1]);
 		return (1); // ERROR
+	}
 	i = 2;
 	while (i < ac - 1 && pfd >= 0)
 	{
