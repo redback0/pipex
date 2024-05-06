@@ -1,8 +1,15 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+
+ifeq ($(DEBUG), 1)
+	CFLAGS = -Wall -Wextra -Werror -g
+else
+	CFLAGS = -Wall -Wextra -Werror
+endif
+
 NAME = pipex
 
 SRC = pipex.c \
+	  pipex_utils.c \
 
 OBJ = $(SRC:.c=.o)
 
@@ -16,6 +23,7 @@ export LOGLEVEL
 export LOGERROR
 
 DEFINES = -DLOGLEVEL=$(LOGLEVEL) -DLOGERROR=$(LOGERROR)
+
 
 #PREFIX/COLOUR VARIABLES
 C_GRAY = \033[1;30m
