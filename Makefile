@@ -42,7 +42,7 @@ $(NAME): $(OBJ) $(LIBFT).a
 
 $(LIBFT).a: $(LIBFT).h
 	@printf "$(PREFIX) MAKING $(C_CYAN)$(LIBFT)$(NC) ARCHIVE\n"
-	@$(MAKE) re -C $(LIBFT)
+	@$(MAKE) -C $(LIBFT)
 	@mv $(LIBFT)/$(LIBFT).a .
 
 $(LIBFT).h:
