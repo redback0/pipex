@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:20:53 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/06 19:28:55 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/07 17:18:48 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 char	**get_path(char **ep);
 int		run_command(char *cmd, int infd, char **path);
 char	*find_command(char *cmd, char **path);
-void	output_to_file(int infd, char *file);
+void	output_to_file(int infd, int outfd);
 int		run_command_child(char *cmd, int *pfd, int infd, char **path);
 int		run_all_commands(int ac, char **av, int pfd, char **path);
 

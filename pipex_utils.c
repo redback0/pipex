@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 16:02:42 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/06 19:21:09 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/07 17:22:38 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	run_command_child(char *cmd, int *pfd, int infd, char **path)
 	args = ft_split(cmd, ' ');
 	cmd = find_command(args[0], path);
 	execve(cmd, args, NULL);
-	perror(args[0]);
+	perror(args[0]); // possibly wrong error, check on macs `< infile asdf | wc -l > outfile`
 	exit(1);
 }
 

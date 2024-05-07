@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/06 19:29:26 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/07 17:18:28 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 int	main(int ac, char *av[], char *ep[])
 {
 	int		pfd;
+	int		outfd;
 	char	**path;
 
 	if (ac < 5)
 		return (1); // ERROR -- what do I do here?
 	pfd = open(av[1], O_RDONLY);
+	outfd = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (pfd < 0)
 	{
 		perror(av[1]);
@@ -28,7 +30,8 @@ int	main(int ac, char *av[], char *ep[])
 	path = get_path(ep);
 	pfd = run_all_commands(ac, av, pfd, path);
 	if (pfd >= 0)
-		output_to_file(pfd, av[ac - 1]);
+		output_to_file(pfd, outfd);
+	close(outfd);
 	ft_split_free(path, *free);
 }
 
@@ -99,12 +102,10 @@ char	*find_command(char *cmd, char **path)
 	}
 }
 
-void	output_to_file(int infd, char *file)
+void	output_to_file(int infd, int outfd)
 {
 	char	*line;
-	int		outfd;
 
-	outfd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	line = get_next_line(infd);
 	while (line)
 	{
