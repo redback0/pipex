@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/08 16:14:28 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:59:05 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ int	main(int ac, char *av[], char *ep[])
 	char	**path;
 
 	if (ac < 5)
-		return (1); // ERROR -- what do I do here?
+	{
+		ft_printf_fd(2, "USAGE: ./pipex {INFILE CMD [CMDS...] CMD OUTFILE}\n");
+		return (1);
+	}
 	pfd = open(av[1], O_RDONLY);
 	outfd = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (pfd < 0)
@@ -58,15 +61,12 @@ int	run_command(char *cmd, int infd, char **path)
 
 	pipe(pipefd);
 	if (fork() == 0)
-		return (run_command_child(cmd, pipefd, infd, path));
-	else
-	{
-		fd = dup(pipefd[0]);
-		close(pipefd[1]);
-		close(pipefd[0]);
-		wait(&signal);
-		return (fd);
-	}
+		run_command_child(cmd, pipefd, infd, path);
+	fd = dup(pipefd[0]);
+	close(pipefd[1]);
+	close(pipefd[0]);
+	wait(&signal);
+	return (fd);
 }
 
 char	*find_command(char *cmd, char **path)

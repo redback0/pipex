@@ -6,13 +6,13 @@
 /*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 16:02:42 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/08 16:57:15 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:56:32 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	run_command_child(char *cmd, int *pfd, int infd, char **path)
+void	run_command_child(char *cmd, int *pfd, int infd, char **path)
 {
 	char	**args;
 
@@ -26,19 +26,25 @@ int	run_command_child(char *cmd, int *pfd, int infd, char **path)
 	if (!cmd)
 	{
 		ft_printf_fd(2, "command not found: %s\n", args[0]);
-		exit(1);
+		rcc_exit(args, path);
 	}
 	if (access(cmd, X_OK) != 0)
 	{
 		ft_printf_fd(2, "%s: %s\n", strerror(errno), args[0]);
-		exit(1);
+		rcc_exit(args, path);
 	}
 	execve(cmd, args, NULL);
 	ft_log(3, "execve failed\n");
 	perror(args[0]);
+	rcc_exit(args, path);
+}
+
+void	rcc_exit(char **args, char **path)
+{
+	ft_split_free(args, free);
+	ft_split_free(path, free);
 	exit(1);
 }
-// Note; there is unfree'd memory here, however I don't think it counts as leaks
 
 char	**get_path(char **ep)
 {
