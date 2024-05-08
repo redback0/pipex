@@ -2,6 +2,7 @@ CC = cc
 
 ifeq ($(DEBUG), 1)
 	CFLAGS = -Wall -Wextra -Werror -g
+	export DEBUG
 else
 	CFLAGS = -Wall -Wextra -Werror
 endif
