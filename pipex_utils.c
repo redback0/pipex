@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 16:02:42 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/08 15:02:58 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:57:15 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,22 @@ int	run_command_child(char *cmd, int *pfd, int infd, char **path)
 	close(pfd[1]);
 	args = ft_split(cmd, ' ');
 	cmd = find_command(args[0], path);
+	if (!cmd)
+	{
+		ft_printf_fd(2, "command not found: %s\n", args[0]);
+		exit(1);
+	}
+	if (access(cmd, X_OK) != 0)
+	{
+		ft_printf_fd(2, "%s: %s\n", strerror(errno), args[0]);
+		exit(1);
+	}
 	execve(cmd, args, NULL);
-	perror(args[0]); // possibly wrong error, check on macs `< infile asdf | wc -l > outfile`
-	ft_split_free(args, *free);
-	ft_split_free(path, *free);
+	ft_log(3, "execve failed\n");
+	perror(args[0]);
 	exit(1);
 }
-// I think I could probably get away without free args or path here, but
-// valgrind mentioned it.
+// Note; there is unfree'd memory here, however I don't think it counts as leaks
 
 char	**get_path(char **ep)
 {

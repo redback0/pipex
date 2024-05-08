@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/07 17:18:28 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:14:28 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ int	main(int ac, char *av[], char *ep[])
 	pfd = open(av[1], O_RDONLY);
 	outfd = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (pfd < 0)
-	{
-		perror(av[1]);
-		return (1);
-	}
+		ft_printf_fd(2, "%s: %s\n", strerror(errno), av[1]);
 	path = get_path(ep);
 	pfd = run_all_commands(ac, av, pfd, path);
 	if (pfd >= 0)
@@ -68,10 +65,7 @@ int	run_command(char *cmd, int infd, char **path)
 		close(pipefd[1]);
 		close(pipefd[0]);
 		wait(&signal);
-		if (signal == 0)
-			return (fd);
-		close(fd);
-		return (-1);
+		return (fd);
 	}
 }
 
@@ -98,7 +92,7 @@ char	*find_command(char *cmd, char **path)
 			free(check);
 		}
 		free(tmp);
-		return (cmd);
+		return (0);
 	}
 }
 
