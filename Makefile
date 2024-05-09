@@ -15,7 +15,8 @@ SRC = pipex.c \
 OBJ = $(SRC:.c=.o)
 
 #LIBFT VARIABLES
-LIBFT = libft
+LIBFT = libft/libft.a
+LIBFT_DIR = libft
 
 #LOGGING DEFINES
 LOGLEVEL ?= 4
@@ -37,27 +38,22 @@ PREFIX = $(C_ORANGE)<$(NAME)>$(NC)
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(LIBFT).a
+$(NAME): $(OBJ) $(LIBFT)
 	@printf "$(PREFIX) CREATING $(C_CYAN)$(NAME)$(NC)\n"
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT).a
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT)
 
-$(LIBFT).a: $(LIBFT).h
+$(LIBFT):
 	@printf "$(PREFIX) MAKING $(C_CYAN)$(LIBFT)$(NC) ARCHIVE\n"
-	@$(MAKE) -C $(LIBFT)
-	@mv $(LIBFT)/$(LIBFT).a .
+	@$(MAKE) -C $(LIBFT_DIR)
 
-$(LIBFT).h:
-	@printf "$(PREFIX) $(C_GRAY)GETTING LIBFT HEADER$(NC)\n"
-	@cp $(LIBFT)/$(LIBFT).h .
-
-%.o: %.c $(LIBFT).h
+%.o: %.c
 	@printf "$(PREFIX) $(C_GRAY)COMPILING $(C_CYAN)$@$(NC)\n"
-	@$(CC) $(CFLAGS) $(DEFINES) -c $< -o $@
+	@$(CC) $(CFLAGS) $(DEFINES) -I$(LIBFT_DIR) -c $< -o $@
 
 clean:
 	@printf "$(PREFIX) $(C_RED)REMOVING OBJECT FILES$(NC)\n"
-	@rm -f $(OBJ) $(LIBFT).a $(LIBFT).h
-	@$(MAKE) fclean -C $(LIBFT)
+	@rm -f $(OBJ)
+	@$(MAKE) fclean -C $(LIBFT_DIR)
 
 fclean: clean
 	@printf "$(PREFIX) $(C_RED)REMOVING ARCHIVE$(NC)\n"
