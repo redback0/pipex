@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 16:02:42 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/09 15:06:54 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/09 16:58:10 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,10 @@ void	get_file_fds(int *pfds, char *infile, char *outfile)
 void	get_here_doc_fds(int *pfds, char *limiter, char *outfile)
 {
 	int		pipefd[2];
-	int		len;
-	char	*line;
 
 	pipe(pipefd);
 	if (fork() == 0)
-	{
-		close(pipefd[0]);
-		len = ft_strlen(limiter);
-		line = get_next_line(0);
-		while (line)
-		{
-			if (ft_strncmp(line, limiter, len) == 0 && line[len] == '\n')
-			{
-				free(line);
-				exit(0);
-			}
-			ft_printf_fd(pipefd[1], line);
-			free(line);
-			line = get_next_line(0);
-		}
-		exit(1);
-	}
+		get_here_doc(pipefd, limiter);
 	close(pipefd[1]);
 	pfds[0] = pipefd[0];
 	pfds[1] = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0666);

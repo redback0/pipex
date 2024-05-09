@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:20:53 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/09 15:02:08 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/09 16:57:19 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	run_command_child(char *cmd, int *pfd, int infd, char **path);
 void	rcc_exit(char **args, char **path);
 void	get_file_fds(int *pfds, char *infile, char *outfile);
 void	get_here_doc_fds(int *pfds, char *limiter, char *outfile);
+void	get_here_doc(int *pipefd, char *limiter);
 int		run_all_commands(int ac, char **av, int pfd, char **path);
 
 #endif
