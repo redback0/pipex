@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/09 14:05:26 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:04:40 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,30 @@
 
 int	main(int ac, char *av[], char *ep[])
 {
-	int		pfd;
-	int		outfd;
+	int		pfds[2];
 	char	**path;
+	int		here_doc;
 
-	if (ac < 5)
+	here_doc = ft_strncmp(av[1], "here_doc", 9) == 0;
+	if (here_doc && ac-- > 5)
 	{
-		ft_printf_fd(2, "USAGE: ./pipex {INFILE CMD [CMDS...] CMD OUTFILE}\n");
+		av++;
+		get_here_doc_fds(pfds, av[1], av[ac - 1]);
+	}
+	else if (!here_doc && ac > 4)
+		get_file_fds(pfds, av[1], av[ac - 1]);
+	else
+	{
+		ft_printf_fd(2, USAGE);
 		return (1);
 	}
-	pfd = open(av[1], O_RDONLY);
-	if (pfd < 0)
-		perror(av[1]);
-	outfd = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	if (outfd < 0)
-	{
-		perror(av[ac - 1]);
-		ac -= 1;
-	}
 	path = get_path(ep);
-	pfd = run_all_commands(ac, av, pfd, path);
-	if (pfd >= 0)
-		output_to_file(pfd, outfd);
-	close(outfd);
+	if (pfds[1] < 0)
+		ac--;
+	pfds[0] = run_all_commands(ac, av, pfds[0], path);
+	if (pfds[0] >= 0)
+		output_to_file(pfds[0], pfds[1]);
+	close(pfds[1]);
 	ft_split_free(path, *free);
 }
 
