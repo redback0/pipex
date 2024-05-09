@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:20:53 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/09 16:57:19 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:14:26 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include "libft.h"
 
 # define USAGE "USAGE: ./pipex [here_doc] {INFILE CMD [CMDS...] CMD OUTFILE}\n"
+# define HERE_DOC_ERR "\nwarning: here-document delimited by end-of-file \
+(wanted `%s`)\n"
 
 char	**get_path(char **ep);
 int		run_command(char *cmd, int infd, char **path);

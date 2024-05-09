@@ -49,7 +49,7 @@ $(LIBFT):
 
 %.o: %.c
 	@printf "$(PREFIX) $(C_GRAY)COMPILING $(C_CYAN)$@$(NC)\n"
-	@$(CC) $(CFLAGS) $(DEFINES) -I$(LIBFT_DIR) -c $< -o $@
+	@$(CC) $(CFLAGS) $(DEFINES) -MMD -I$(LIBFT_DIR) -c $< -o $@
 
 clean:
 	@printf "$(PREFIX) $(C_RED)REMOVING OBJECT FILES$(NC)\n"

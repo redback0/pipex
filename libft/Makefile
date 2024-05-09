@@ -44,7 +44,7 @@ $(NAME): $(OBJ)
 
 %.o: %.c
 	@printf "$(PREFIX) $(C_GRAY)COMPILING $@$(NC)\n"
-	@$(CC) $(CFLAGS) $(DEFINES) -c $< -o $@
+	@$(CC) $(CFLAGS) $(DEFINES) -MMD -c $< -o $@
 
 clean:
 	@printf "$(PREFIX) $(C_RED)REMOVING OBJECT FILES$(NC)\n"

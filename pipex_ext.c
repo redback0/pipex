@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 16:51:42 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/09 16:58:27 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:13:12 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ void	get_here_doc(int *pipefd, char *limiter)
 		ft_printf_fd(1, "> ");
 		line = get_next_line(0);
 	}
+	ft_printf_fd(2, HERE_DOC_ERR, limiter);
 	exit(1);
 }
