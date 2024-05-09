@@ -6,7 +6,7 @@
 /*   By: njackson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 11:29:21 by njackson          #+#    #+#             */
-/*   Updated: 2024/04/01 14:10:07 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:59:59 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,11 @@ char	*split_buf(char **buf, int fd)
 	{
 		if ((*buf)[len_out++] == '\n')
 		{
-			out = (char *)malloc((len_out + 1) * sizeof(char));
+			out = (char *)ft_calloc((len_out + 1), sizeof(char));
 			if (!out)
 				return (0);
-			out[len_out] = '\0';
 			out = get_sav(buf, out, len_out);
+			clean_sav_lst(fd);
 			return (out);
 		}
 	}

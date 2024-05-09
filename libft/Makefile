@@ -1,5 +1,12 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+
+ifeq ($(DEBUG), 1)
+	CFLAGS = -Wall -Wextra -Werror -g
+	export DEBUG
+else
+	CFLAGS = -Wall -Wextra -Werror
+endif
+
 NAME = libft.a
 
 SRC = ft_atoi.c			ft_bzero.c			ft_calloc.c \

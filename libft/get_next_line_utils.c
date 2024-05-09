@@ -6,7 +6,7 @@
 /*   By: njackson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 11:41:39 by njackson          #+#    #+#             */
-/*   Updated: 2024/04/01 14:10:23 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:55:15 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ void	clean_sav_lst(int fd)
 		prev = ptr;
 		ptr = ptr->next;
 	}
-	if (!ptr)
+	if (!ptr || (ptr->buf && *(ptr->buf)))
 		return ;
 	if (ptr->buf && !*(ptr->buf))
-		return ;
+		free(ptr->buf);
 	if (!prev)
 		*lst = ptr->next;
 	else
