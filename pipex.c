@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/09 13:42:56 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/09 14:05:26 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ int	main(int ac, char *av[], char *ep[])
 		ft_printf_fd(2, "USAGE: ./pipex {INFILE CMD [CMDS...] CMD OUTFILE}\n");
 		return (1);
 	}
+	pfd = open(av[1], O_RDONLY);
+	if (pfd < 0)
+		perror(av[1]);
 	outfd = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (outfd < 0)
 	{
 		perror(av[ac - 1]);
 		ac -= 1;
 	}
-	pfd = open(av[1], O_RDONLY);
-	if (pfd < 0)
-		perror(av[1]);
 	path = get_path(ep);
 	pfd = run_all_commands(ac, av, pfd, path);
 	if (pfd >= 0)
