@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 16:02:42 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/08 17:56:32 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:15:15 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ void	run_command_child(char *cmd, int *pfd, int infd, char **path)
 	cmd = find_command(args[0], path);
 	if (!cmd)
 	{
-		ft_printf_fd(2, "command not found: %s\n", args[0]);
+		ft_printf_fd(2, "%s: command not found\n", args[0]);
 		rcc_exit(args, path);
 	}
 	if (access(cmd, X_OK) != 0)
 	{
-		ft_printf_fd(2, "%s: %s\n", strerror(errno), args[0]);
+		perror(args[0]);
 		rcc_exit(args, path);
 	}
 	execve(cmd, args, NULL);

@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/08 17:59:05 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:42:56 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,15 @@ int	main(int ac, char *av[], char *ep[])
 		ft_printf_fd(2, "USAGE: ./pipex {INFILE CMD [CMDS...] CMD OUTFILE}\n");
 		return (1);
 	}
-	pfd = open(av[1], O_RDONLY);
 	outfd = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	if (outfd < 0)
+	{
+		perror(av[ac - 1]);
+		ac -= 1;
+	}
+	pfd = open(av[1], O_RDONLY);
 	if (pfd < 0)
-		ft_printf_fd(2, "%s: %s\n", strerror(errno), av[1]);
+		perror(av[1]);
 	path = get_path(ep);
 	pfd = run_all_commands(ac, av, pfd, path);
 	if (pfd >= 0)
@@ -42,7 +47,7 @@ int	run_all_commands(int ac, char **av, int pfd, char **path)
 	int	status;
 
 	i = 2;
-	while (i < ac - 1 && pfd >= 0)
+	while (i < ac - 1)
 	{
 		npfd = run_command(av[i], pfd, path);
 		close(pfd);
@@ -61,7 +66,11 @@ int	run_command(char *cmd, int infd, char **path)
 
 	pipe(pipefd);
 	if (fork() == 0)
+	{
+		if (infd < 0)
+			exit(1);
 		run_command_child(cmd, pipefd, infd, path);
+	}
 	fd = dup(pipefd[0]);
 	close(pipefd[1]);
 	close(pipefd[0]);
