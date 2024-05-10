@@ -6,7 +6,7 @@
 /*   By: njackson <njackson@student.42adel.o>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:37:27 by njackson          #+#    #+#             */
-/*   Updated: 2024/05/09 15:04:40 by njackson         ###   ########.fr       */
+/*   Updated: 2024/05/10 14:28:43 by njackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ int	run_command(char *cmd, int infd, char **path)
 	if (fork() == 0)
 	{
 		if (infd < 0)
+		{
+			ft_split_free(path, free);
 			exit(1);
+		}
 		run_command_child(cmd, pipefd, infd, path);
 	}
 	fd = dup(pipefd[0]);
